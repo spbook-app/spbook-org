@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spbook — Accounting without a database</title>
+  <meta
+    name="description"
+    content="Spbook is a lightweight accounting tool for solo entrepreneurs. It stores data as JSON files in your Google Drive instead of a traditional database."
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#top">
+        <span class="brand-mark">SB</span>
+        <span>Spbook</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#story">Story</a>
+        <a href="#principles">Principles</a>
+        <a href="#storage">Storage</a>
+        <a href="#open-source">Open Source</a>
+        <a href="https://github.com/spbook-app" target="_blank" rel="noreferrer">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="card hero-copy">
+          <div class="eyebrow">Built for solo entrepreneurs</div>
+          <h1>Accounting without a database.</h1>
+          <p class="lead">
+            Spbook is a lightweight accounting tool designed for solo entrepreneurs. 
+            It stores structured data as JSON files in your Google Drive, eliminating the need for traditional database infrastructure while keeping full control in the hands of the user.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://spbook.app">Open App</a>
+            <a class="btn" href="https://github.com/spbook-app">View on GitHub</a>
+            <a class="btn" href="#story">Why it exists</a>
+          </div>
+        </div>
+
+        <aside class="card hero-panel">
+          <div>
+            <div class="mini-label">Storage model</div>
+            <pre class="storage-tree">/spbook/
+  /config/
+    ...
+  /2026/
+    /invoices/
+      inv-2026-01.json
+    /transactions/
+      2026-03.json
+    ... </pre>
+          </div>
+          <p class="panel-note">
+            No database server. No heavy infrastructure. Just a clear folder structure, JSON files, and cloud storage the user already controls. Each year lives in its own folder — close the year, compress it, and move on.
+          </p>
+          <div class="stats">
+            <div class="stat">
+              <strong>User-owned</strong>
+              <span>Data stays in personal storage</span>
+            </div>
+            <div class="stat">
+              <strong>Low overhead</strong>
+              <span>No hosting a database for a few hundred records</span>
+            </div>
+            <div class="stat">
+              <strong>Open source</strong>
+              <span>Built in public as a practical tool</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="story">
+      <div class="container grid-2">
+        <div class="card story">
+          <h2 class="section-title">Why Spbook exists</h2>
+          <p>
+            Most accounting solutions are built around multi-user environments, database-backed systems, and operational complexity that may not be necessary for small-scale, single-user workflows. 
+            For solo entrepreneurs with a limited number of yearly records, such systems often introduce more overhead than value.
+          </p>
+        </div>
+        <div class="card story">
+          <h2 class="section-title">A simpler model</h2>
+          <p>
+            Spbook takes a different approach by rethinking the storage layer. Instead of relying on a traditional database, it leverages structured files and cloud storage. 
+            This removes the need for database hosting, backups, and maintenance, while remaining fully sufficient for low-volume accounting scenarios.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="quote card">
+          <strong>The core idea is simple:</strong> separate the data from the application. 
+          Spbook manages accounting records, but the data itself remains under the user’s control. 
+          All records are stored as files in the user’s own storage and can be accessed, reused, or processed by other tools at any time.
+        </div>
+      </div>
+    </section>
+
+    <section id="principles">
+      <div class="container">
+        <h2 class="section-title">Design principles</h2>
+        <p class="section-intro">
+          Spbook is designed around a focused use case: personal bookkeeping for a single user. The system prioritizes clarity, simplicity, and long-term maintainability over feature complexity.
+        </p>
+        <div class="grid-3">
+          <article class="card feature">
+            <div class="feature-icon">01</div>
+            <h3>Keep the data separate</h3>
+            <p>
+              The system does not lock data into a proprietary backend. JSON-based storage ensures portability, transparency, and long-term accessibility.
+            </p>
+          </article>
+          <article class="card feature">
+            <div class="feature-icon">02</div>
+            <h3>Optimize for real scale</h3>
+            <p>
+              The architecture reflects actual usage patterns. A single-user system with limited data volume does not require full database infrastructure.
+            </p>
+          </article>
+          <article class="card feature">
+            <div class="feature-icon">03</div>
+            <h3>Prefer clarity over magic</h3>
+            <p>
+              A file-based structure provides a predictable and understandable model. The system remains easy to inspect, debug, and evolve over time.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="storage">
+      <div class="container grid-2">
+        <div class="card code-card">
+          <h2 class="section-title">Example record</h2>
+          <pre>{
+  "id": "inv-2026-0001",
+  "type": "invoice",
+  "issueDate": "2026-04-01",
+  "client": {
+    "name": "Example OÜ",
+    "country": "EE"
+  },
+  "currency": "EUR",
+  "amount": 1234.50,
+  "status": "paid"
+}</pre>
+        </div>
+        <div class="card story">
+          <h2 class="section-title">Why Google Drive</h2>
+          <p>
+            Google Drive is not presented here as a universal answer for every application. It is a practical storage layer for a small personal accounting tool: familiar, accessible, backed up, and already good enough for structured files and directory-based organization.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="open-source">
+      <div class="container grid-2">
+        <div class="card roadmap">
+          <h2 class="section-title">Open source by intention</h2>
+          <p>
+            This project is being built for personal use first. It may or may not become useful to others, but that is exactly why it makes sense to build it in the open. The architecture is interesting on its own, and anyone should be able to study it, adapt it, or reuse the ideas.
+          </p>
+          <ul>
+            <li>Built in public as a real working tool</li>
+            <li>Focused on portability and user ownership</li>
+            <li>Intended as both a product and an engineering case study</li>
+          </ul>
+        </div>
+        <div class="card roadmap">
+          <h2 class="section-title">Likely scope</h2>
+          <p>
+            Spbook starts with bookkeeping for one user, then may grow into invoice generation, administrative workflows, and mobile applications. The foundation should remain the same: simple data, clear structure, and no unnecessary infrastructure.
+          </p>
+          <ul>
+            <li>Bookkeeping records for s.p. activity</li>
+            <li>Invoice generation and export</li>
+            <li>Bank statement imports</li>
+            <li>Mobile clients built on the same data model</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>Spbook — Accounting without a database.</div>
+      <div>
+        <a href="https://spbook.app">spbook.app</a>
+        ·
+        <a href="https://github.com/spbook-app">GitHub</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
