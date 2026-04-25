@@ -1,0 +1,481 @@
+/*
+ * style-warm-dark.css
+ * Warm dark editorial theme — same serif typography as style-warm.css
+ * but inverted to a dark olive/charcoal canvas with terracotta accents.
+ */
+
+/* ─── Tokens ─────────────────────────────────────────────── */
+:root {
+  /* Brand */
+  --terracotta:    #c96442;
+  --coral:         #d97757;
+
+  /* Dark warm surfaces */
+  --bg:            #17160f;   /* warm near-black, olive tint */
+  --bg-raised:     #1f1e15;   /* slightly lighter surface */
+  --bg-card:       #242318;   /* card background */
+  --bg-elevated:   #2c2b1f;   /* elevated / hover */
+  --bg-inset:      #0f0e09;   /* inset / code blocks */
+
+  /* Text */
+  --text:          #e8e4d8;   /* warm off-white */
+  --muted:         #a09a8a;   /* warm stone */
+  --subtle:        #6b6558;   /* de-emphasised */
+
+  /* Borders */
+  --border:        rgba(255, 248, 230, 0.10);
+  --border-strong: rgba(255, 248, 230, 0.16);
+  --ring-warm:     rgba(201, 100, 66, 0.35);
+
+  /* Warm silver for code */
+  --warm-silver:   #b0a898;
+
+  --max: 1200px;
+}
+
+/* ─── Reset ──────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+}
+
+a { color: inherit; text-decoration: none; }
+p { margin: 0; }
+
+h1, h2, h3 {
+  font-family: Georgia, ui-serif, serif;
+  font-weight: 500;
+  margin-top: 0;
+}
+
+/* ─── Layout ─────────────────────────────────────────────── */
+.container {
+  width: min(var(--max), calc(100% - 40px));
+  margin: 0 auto;
+}
+
+/* ─── Navigation ─────────────────────────────────────────── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(23, 22, 15, 0.88);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  gap: 20px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: Georgia, ui-serif, serif;
+  font-weight: 500;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  color: var(--coral);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 0.94rem;
+  color: var(--muted);
+}
+
+.nav-links a:hover { color: var(--text); }
+
+/* ─── Hero ───────────────────────────────────────────────── */
+.hero { padding: 72px 0 56px; }
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+/* ─── Cards ──────────────────────────────────────────────── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 24px;
+}
+
+/* ─── Hero copy ──────────────────────────────────────────── */
+.hero-copy { padding: 40px; }
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  margin-bottom: 20px;
+  border-radius: 999px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2.8rem, 6vw, 4rem);
+  line-height: 1.10;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.hero-copy .lead {
+  margin: 22px 0 0;
+  font-size: 1.1rem;
+  color: var(--muted);
+  max-width: 58ch;
+  line-height: 1.6;
+}
+
+/* ─── CTA buttons ────────────────────────────────────────── */
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-elevated);
+  color: var(--text);
+  font-size: 0.94rem;
+  font-weight: 500;
+  transition: box-shadow 0.15s ease, background 0.15s ease;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: var(--bg-inset);
+  box-shadow: var(--ring-warm) 0px 0px 0px 1px;
+}
+
+.btn-primary {
+  background: var(--terracotta);
+  border-color: var(--terracotta);
+  color: #faf9f5;
+  box-shadow: var(--terracotta) 0px 0px 0px 0px, var(--terracotta) 0px 0px 0px 1px;
+}
+
+.btn-primary:hover {
+  background: var(--coral);
+  border-color: var(--coral);
+}
+
+/* ─── Hero panel ─────────────────────────────────────────── */
+.hero-panel {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.mini-label {
+  color: var(--subtle);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+/* ─── Storage layers ─────────────────────────────────────── */
+.storage-layers {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.layer {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--bg-inset);
+  border: 1px solid var(--border-strong);
+}
+
+.layer strong {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+.layer span {
+  font-size: 0.82rem;
+  color: var(--subtle);
+  margin-top: 2px;
+}
+
+.layer-arrow {
+  font-size: 0.75rem;
+  color: var(--subtle);
+  padding-left: 14px;
+  opacity: 0.55;
+}
+
+/* ─── Panel note ─────────────────────────────────────────── */
+.panel-note {
+  color: var(--subtle);
+  font-size: 0.88rem;
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* ─── Stats ──────────────────────────────────────────────── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.stat {
+  padding: 14px;
+  border-radius: 8px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+}
+
+.stat strong {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 3px;
+  color: var(--text);
+}
+
+.stat span {
+  color: var(--subtle);
+  font-size: 0.80rem;
+  line-height: 1.4;
+}
+
+/* ─── Sections ───────────────────────────────────────────── */
+section { padding: 24px 0 32px; }
+
+.section-title {
+  margin: 0 0 14px;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  line-height: 1.20;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.section-intro {
+  color: var(--muted);
+  margin: 0 0 28px;
+  font-size: 1.06rem;
+  max-width: 68ch;
+}
+
+/* ─── Grids ──────────────────────────────────────────────── */
+.grid-3,
+.grid-2 {
+  display: grid;
+  gap: 16px;
+}
+
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+
+/* ─── Content cards ──────────────────────────────────────── */
+.feature,
+.story,
+.roadmap,
+.code-card {
+  padding: 28px;
+}
+
+h2 { margin-top: 0; }
+
+h3 {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.feature p,
+.story p,
+.roadmap p {
+  color: var(--muted);
+  font-size: 0.96rem;
+}
+
+.feature-icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: rgba(201, 100, 66, 0.14);
+  border: 1px solid rgba(201, 100, 66, 0.28);
+  color: var(--coral);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+/* ─── Quote ──────────────────────────────────────────────── */
+.quote {
+  padding: 28px 32px;
+  border-left: 3px solid var(--terracotta);
+  background: var(--bg-card);
+  border-radius: 0 12px 12px 0;
+  color: var(--muted);
+  font-size: 1.06rem;
+  line-height: 1.65;
+}
+
+.quote strong { color: var(--text); }
+
+/* ─── Code card ──────────────────────────────────────────── */
+.code-card pre {
+  margin: 0;
+  padding: 18px;
+  overflow-x: auto;
+  border-radius: 8px;
+  background: var(--bg-inset);
+  border: 1px solid var(--border-strong);
+  color: var(--warm-silver);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Roadmap lists ──────────────────────────────────────── */
+.roadmap ul {
+  margin: 14px 0 0;
+  padding-left: 20px;
+  color: var(--muted);
+  font-size: 0.96rem;
+}
+
+.roadmap li + li { margin-top: 8px; }
+
+/* ─── Principles section — slightly lighter dark alternation  */
+#principles {
+  background: var(--bg-raised);
+  padding: 56px 0;
+}
+
+#principles .card {
+  background: var(--bg-elevated);
+  border-color: var(--border-strong);
+  box-shadow: none;
+}
+
+#principles .feature-icon {
+  background: rgba(201, 100, 66, 0.18);
+  border-color: rgba(201, 100, 66, 0.35);
+  color: var(--coral);
+}
+
+/* ─── Footer ─────────────────────────────────────────────── */
+.footer {
+  padding: 40px 0 56px;
+  color: var(--subtle);
+  font-size: 0.90rem;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+}
+
+.footer a:hover { color: var(--text); }
+
+/* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 960px) {
+  .hero-grid,
+  .grid-3,
+  .grid-2,
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .hero { padding-top: 44px; }
+
+  .hero-copy,
+  .hero-panel,
+  .feature,
+  .story,
+  .roadmap,
+  .code-card {
+    padding: 22px;
+  }
+
+  .nav-inner,
+  .footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    width: min(var(--max), calc(100% - 24px));
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .cta-row {
+    flex-direction: column;
+  }
+
+  .btn { width: 100%; }
+}

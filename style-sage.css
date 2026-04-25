@@ -1,0 +1,485 @@
+/*
+ * style-claude.css
+ * Warm editorial theme based on Anthropic/Claude design language.
+ * Swap href="style.css" → href="style-claude.css" in index.html to compare.
+ */
+
+/* ─── Tokens ─────────────────────────────────────────────── */
+:root {
+  --near-black:    #141413;
+  --terracotta:    #4a7c5e;
+  --coral:         #5a9070;
+  --parchment:     #f5f4ed;
+  --ivory:         #faf9f5;
+  --white:         #ffffff;
+  --warm-sand:     #e8e6dc;
+  --dark-surface:  #30302e;
+  --charcoal-warm: #4d4c48;
+  --olive-gray:    #5e5d59;
+  --stone-gray:    #87867f;
+  --warm-silver:   #b0aea5;
+  --border-cream:  #f0eee6;
+  --border-warm:   #e8e6dc;
+  --ring-warm:     #d1cfc5;
+
+  --bg:     var(--parchment);
+  --text:   var(--near-black);
+  --muted:  var(--olive-gray);
+  --border: var(--border-cream);
+  --max:    1200px;
+}
+
+/* ─── Reset ──────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+}
+
+a { color: inherit; text-decoration: none; }
+p { margin: 0; }
+
+h1, h2, h3 {
+  font-family: Georgia, ui-serif, serif;
+  font-weight: 500;
+  margin-top: 0;
+}
+
+/* ─── Layout ─────────────────────────────────────────────── */
+.container {
+  width: min(var(--max), calc(100% - 40px));
+  margin: 0 auto;
+}
+
+/* ─── Navigation ─────────────────────────────────────────── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(245, 244, 237, 0.88);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-cream);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  gap: 20px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: Georgia, ui-serif, serif;
+  font-weight: 500;
+  font-size: 1.05rem;
+  color: var(--near-black);
+}
+
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: var(--warm-sand);
+  border: 1px solid var(--border-warm);
+  color: var(--charcoal-warm);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 0.94rem;
+  color: var(--olive-gray);
+}
+
+.nav-links a:hover { color: var(--near-black); }
+
+/* ─── Hero ───────────────────────────────────────────────── */
+.hero { padding: 72px 0 56px; }
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+/* ─── Cards ──────────────────────────────────────────────── */
+.card {
+  background: var(--ivory);
+  border: 1px solid var(--border-cream);
+  border-radius: 16px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 24px;
+}
+
+/* ─── Hero copy ──────────────────────────────────────────── */
+.hero-copy { padding: 40px; }
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  margin-bottom: 20px;
+  border-radius: 999px;
+  background: var(--warm-sand);
+  border: 1px solid var(--border-warm);
+  color: var(--charcoal-warm);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2.8rem, 6vw, 4rem);
+  line-height: 1.10;
+  letter-spacing: -0.02em;
+  color: var(--near-black);
+}
+
+.hero-copy .lead {
+  margin: 22px 0 0;
+  font-size: 1.1rem;
+  color: var(--muted);
+  max-width: 58ch;
+  line-height: 1.6;
+}
+
+/* ─── CTA buttons ────────────────────────────────────────── */
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 8px;
+  border: 1px solid var(--border-warm);
+  background: var(--warm-sand);
+  color: var(--charcoal-warm);
+  font-size: 0.94rem;
+  font-weight: 500;
+  transition: box-shadow 0.15s ease, background 0.15s ease;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: var(--border-warm);
+  box-shadow: var(--warm-sand) 0px 0px 0px 0px, var(--ring-warm) 0px 0px 0px 1px;
+}
+
+.btn-primary {
+  background: var(--terracotta);
+  border-color: var(--terracotta);
+  color: var(--ivory);
+  box-shadow: var(--terracotta) 0px 0px 0px 0px, var(--terracotta) 0px 0px 0px 1px;
+}
+
+.btn-primary:hover {
+  background: var(--coral);
+  border-color: var(--coral);
+  box-shadow: var(--terracotta) 0px 0px 0px 0px, var(--coral) 0px 0px 0px 1px;
+}
+
+/* ─── Hero panel ─────────────────────────────────────────── */
+.hero-panel {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.mini-label {
+  color: var(--stone-gray);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+/* ─── Storage layers ─────────────────────────────────────── */
+.storage-layers {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.layer {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--white);
+  border: 1px solid var(--border-warm);
+  box-shadow: var(--white) 0px 0px 0px 0px, var(--ring-warm) 0px 0px 0px 1px;
+}
+
+.layer strong {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--near-black);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+.layer span {
+  font-size: 0.82rem;
+  color: var(--stone-gray);
+  margin-top: 2px;
+}
+
+.layer-arrow {
+  font-size: 0.75rem;
+  color: var(--stone-gray);
+  padding-left: 14px;
+  opacity: 0.55;
+}
+
+/* ─── Panel note ─────────────────────────────────────────── */
+.panel-note {
+  color: var(--stone-gray);
+  font-size: 0.88rem;
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* ─── Stats ──────────────────────────────────────────────── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.stat {
+  padding: 14px;
+  border-radius: 8px;
+  background: var(--warm-sand);
+  border: 1px solid var(--border-warm);
+}
+
+.stat strong {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 3px;
+  color: var(--near-black);
+}
+
+.stat span {
+  color: var(--stone-gray);
+  font-size: 0.80rem;
+  line-height: 1.4;
+}
+
+/* ─── Sections ───────────────────────────────────────────── */
+section { padding: 24px 0 32px; }
+
+.section-title {
+  margin: 0 0 14px;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  line-height: 1.20;
+  letter-spacing: -0.01em;
+  color: var(--near-black);
+}
+
+.section-intro {
+  color: var(--muted);
+  margin: 0 0 28px;
+  font-size: 1.06rem;
+  max-width: 68ch;
+}
+
+/* ─── Grids ──────────────────────────────────────────────── */
+.grid-3,
+.grid-2 {
+  display: grid;
+  gap: 16px;
+}
+
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+
+/* ─── Content cards ──────────────────────────────────────── */
+.feature,
+.story,
+.roadmap,
+.code-card {
+  padding: 28px;
+}
+
+h2 { margin-top: 0; }
+
+h3 {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.feature p,
+.story p,
+.roadmap p {
+  color: var(--muted);
+  font-size: 0.96rem;
+}
+
+.feature-icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: var(--warm-sand);
+  border: 1px solid var(--border-warm);
+  color: var(--charcoal-warm);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+/* ─── Quote ──────────────────────────────────────────────── */
+.quote {
+  padding: 28px 32px;
+  border-left: 3px solid var(--terracotta);
+  background: var(--ivory);
+  border-radius: 0 12px 12px 0;
+  color: var(--charcoal-warm);
+  font-size: 1.06rem;
+  line-height: 1.65;
+}
+
+.quote strong { color: var(--near-black); }
+
+/* ─── Code card ──────────────────────────────────────────── */
+.code-card pre {
+  margin: 0;
+  padding: 18px;
+  overflow-x: auto;
+  border-radius: 8px;
+  background: var(--near-black);
+  border: 1px solid var(--dark-surface);
+  color: var(--warm-silver);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Roadmap lists ──────────────────────────────────────── */
+.roadmap ul {
+  margin: 14px 0 0;
+  padding-left: 20px;
+  color: var(--muted);
+  font-size: 0.96rem;
+}
+
+.roadmap li + li { margin-top: 8px; }
+
+/* ─── Principles section — dark alternation ──────────────── */
+#principles {
+  background: var(--near-black);
+  padding: 56px 0;
+}
+
+#principles .section-title { color: var(--ivory); }
+#principles .section-intro { color: var(--warm-silver); }
+
+#principles .card {
+  background: var(--dark-surface);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+}
+
+#principles h3 { color: var(--ivory); }
+#principles .feature p { color: var(--warm-silver); }
+
+#principles .feature-icon {
+  background: rgba(74, 124, 94, 0.18);
+  border-color: rgba(74, 124, 94, 0.35);
+  color: var(--coral);
+}
+
+/* ─── Footer ─────────────────────────────────────────────── */
+.footer {
+  padding: 40px 0 56px;
+  color: var(--stone-gray);
+  font-size: 0.90rem;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border-warm);
+}
+
+.footer a:hover { color: var(--near-black); }
+
+/* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 960px) {
+  .hero-grid,
+  .grid-3,
+  .grid-2,
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .hero { padding-top: 44px; }
+
+  .hero-copy,
+  .hero-panel,
+  .feature,
+  .story,
+  .roadmap,
+  .code-card {
+    padding: 22px;
+  }
+
+  .nav-inner,
+  .footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    width: min(var(--max), calc(100% - 24px));
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .cta-row {
+    flex-direction: column;
+  }
+
+  .btn { width: 100%; }
+}

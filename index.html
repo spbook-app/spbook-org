@@ -8,7 +8,24 @@
     name="description"
     content="Spbook is a lightweight offline-first accounting tool for solo entrepreneurs. Data is stored locally and synced to Google Drive — no backend database required."
   />
-  <link id="theme-stylesheet" rel="stylesheet" href="style.css" />
+  <link id="theme-stylesheet" rel="stylesheet" href="style-warm.css" />
+  <script>
+    /* Apply saved theme before first paint — no flash */
+    (function () {
+      var palette = localStorage.getItem('spbook-palette') || 'warm';
+      var mode    = localStorage.getItem('spbook-mode')    || 'system';
+      var dark = mode === 'dark' || (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      var P = {
+        warm:    ['style-warm.css',    'style-warm-dark.css'],
+        amber:   ['style-amber.css',   'style-amber-dark.css'],
+        sage:    ['style-sage.css',    'style-sage-dark.css'],
+        burgundy:['style-burgundy.css','style-burgundy-dark.css'],
+        slate:   ['style-slate.css',   'style-slate-dark.css'],
+      };
+      var p = P[palette] || P.warm;
+      document.getElementById('theme-stylesheet').href = dark ? p[1] : p[0];
+    })();
+  </script>
 </head>
 <body>
   <header class="nav">
@@ -205,51 +222,110 @@
   </footer>
   <div id="theme-switcher" style="
     position: fixed; bottom: 24px; right: 24px; z-index: 9999;
-    display: flex; align-items: center; gap: 8px;
-    background: rgba(20,20,19,0.85); backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 999px; padding: 8px 14px;
+    display: flex; align-items: stretch;
     font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-    font-size: 13px; font-weight: 500; cursor: pointer;
-    color: #eee; user-select: none;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-    transition: opacity 0.15s ease;
+    font-size: 13px; font-weight: 500; user-select: none;
+    border-radius: 999px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+    background: rgba(23,22,15,0.90);
+    border: 1px solid rgba(255,248,230,0.14);
+    color: #e8e4d8;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   ">
-    <span id="theme-icon">☀️</span>
-    <span id="theme-label">Warm theme</span>
+    <button id="sw-palette" title="Change palette" style="
+      display: flex; align-items: center; gap: 7px;
+      padding: 9px 10px 9px 14px;
+      background: none; border: none; cursor: pointer;
+      color: inherit; font: inherit; border-radius: 999px 0 0 999px;
+    ">
+      <span id="sw-swatch" style="
+        width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0;
+        background: #c96442; box-shadow: 0 0 0 1px rgba(255,255,255,0.2);
+      "></span>
+      <span id="sw-palette-label">Warm</span>
+    </button>
+    <div id="sw-divider" style="width: 1px; background: rgba(255,255,255,0.12); margin: 8px 0;"></div>
+    <button id="sw-mode" title="Change mode" style="
+      display: flex; align-items: center; gap: 5px;
+      padding: 9px 14px 9px 10px;
+      background: none; border: none; cursor: pointer;
+      color: inherit; font: inherit; border-radius: 0 999px 999px 0;
+    ">
+      <span id="sw-mode-icon"></span>
+      <span id="sw-mode-label"></span>
+    </button>
   </div>
 
   <script>
     (function () {
-      var DARK = 'style.css';
-      var WARM = 'style-warm.css';
-      var link = document.getElementById('theme-stylesheet');
-      var switcher = document.getElementById('theme-switcher');
-      var icon = document.getElementById('theme-icon');
-      var label = document.getElementById('theme-label');
+      var PALETTES = [
+        { id: 'warm',     label: 'Warm',     swatch: '#c96442', l: 'style-warm.css',     d: 'style-warm-dark.css'     },
+        { id: 'amber',    label: 'Amber',    swatch: '#a86b1a', l: 'style-amber.css',    d: 'style-amber-dark.css'    },
+        { id: 'sage',     label: 'Sage',     swatch: '#4a7c5e', l: 'style-sage.css',     d: 'style-sage-dark.css'     },
+        { id: 'burgundy', label: 'Burgundy', swatch: '#8b3a52', l: 'style-burgundy.css', d: 'style-burgundy-dark.css' },
+        { id: 'slate',    label: 'Slate',    swatch: '#4a5e78', l: 'style-slate.css',    d: 'style-slate-dark.css'    },
+      ];
+      var MODES = [
+        { id: 'system', icon: '⚙️', label: 'System' },
+        { id: 'light',  icon: '☀️', label: 'Light'  },
+        { id: 'dark',   icon: '🌙', label: 'Dark'   },
+      ];
 
-      var saved = localStorage.getItem('spbook-theme') || DARK;
-      link.href = saved;
-      updateUI(saved);
+      var link      = document.getElementById('theme-stylesheet');
+      var switcher  = document.getElementById('theme-switcher');
+      var divider   = document.getElementById('sw-divider');
+      var swSwatch  = document.getElementById('sw-swatch');
+      var swPLabel  = document.getElementById('sw-palette-label');
+      var swMIcon   = document.getElementById('sw-mode-icon');
+      var swMLabel  = document.getElementById('sw-mode-label');
+      var mq        = window.matchMedia('(prefers-color-scheme: dark)');
 
-      switcher.addEventListener('click', function () {
-        var next = link.href.endsWith(WARM) ? DARK : WARM;
-        link.href = next;
-        localStorage.setItem('spbook-theme', next);
-        updateUI(next);
+      var pidx = Math.max(0, PALETTES.findIndex(function (p) {
+        return p.id === (localStorage.getItem('spbook-palette') || 'warm');
+      }));
+      var midx = Math.max(0, MODES.findIndex(function (m) {
+        return m.id === (localStorage.getItem('spbook-mode') || 'system');
+      }));
+
+      render();
+
+      document.getElementById('sw-palette').addEventListener('click', function () {
+        pidx = (pidx + 1) % PALETTES.length;
+        localStorage.setItem('spbook-palette', PALETTES[pidx].id);
+        render();
       });
 
-      function updateUI(theme) {
-        var isWarm = theme === WARM || theme.endsWith(WARM);
-        icon.textContent = isWarm ? '🌑' : '☀️';
-        label.textContent = isWarm ? 'Dark theme' : 'Warm theme';
-        switcher.style.background = isWarm
-          ? 'rgba(245,244,237,0.90)'
-          : 'rgba(20,20,19,0.85)';
-        switcher.style.borderColor = isWarm
-          ? 'rgba(0,0,0,0.10)'
-          : 'rgba(255,255,255,0.12)';
-        switcher.style.color = isWarm ? '#4d4c48' : '#eee';
+      document.getElementById('sw-mode').addEventListener('click', function () {
+        midx = (midx + 1) % MODES.length;
+        localStorage.setItem('spbook-mode', MODES[midx].id);
+        render();
+      });
+
+      mq.addEventListener('change', function () {
+        if (MODES[midx].id === 'system') render();
+      });
+
+      function isDark() {
+        var m = MODES[midx].id;
+        return m === 'dark' || (m === 'system' && mq.matches);
+      }
+
+      function render() {
+        var dark = isDark();
+        var p = PALETTES[pidx];
+        var m = MODES[midx];
+        link.href = dark ? p.d : p.l;
+
+        swSwatch.style.background = p.swatch;
+        swPLabel.textContent      = p.label;
+        swMIcon.textContent       = m.icon;
+        swMLabel.textContent      = m.label;
+
+        var light = !dark;
+        switcher.style.background  = light ? 'rgba(245,244,237,0.94)' : 'rgba(23,22,15,0.90)';
+        switcher.style.borderColor = light ? 'rgba(0,0,0,0.10)'       : 'rgba(255,248,230,0.14)';
+        switcher.style.color       = light ? '#4d4c48'                 : '#e8e4d8';
+        divider.style.background   = light ? 'rgba(0,0,0,0.12)'       : 'rgba(255,255,255,0.12)';
       }
     })();
   </script>
