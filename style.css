@@ -204,6 +204,39 @@ h1 {
   overflow-x: auto;
 }
 
+.storage-layers {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.layer {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(8, 12, 24, 0.55);
+  border: 1px solid var(--border);
+}
+
+.layer strong {
+  font-size: 0.95rem;
+  color: var(--accent-strong);
+}
+
+.layer span {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.layer-arrow {
+  font-size: 0.78rem;
+  color: var(--muted);
+  padding-left: 14px;
+  opacity: 0.6;
+}
+
 .panel-note {
   color: var(--muted);
   font-size: 0.96rem;

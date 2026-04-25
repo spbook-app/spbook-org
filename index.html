@@ -6,7 +6,7 @@
   <title>Spbook — Accounting without a database</title>
   <meta
     name="description"
-    content="Spbook is a lightweight accounting tool for solo entrepreneurs. It stores data as JSON files in your Google Drive instead of a traditional database."
+    content="Spbook is a lightweight offline-first accounting tool for solo entrepreneurs. Data is stored locally and synced to Google Drive — no backend database required."
   />
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -34,8 +34,9 @@
           <div class="eyebrow">Built for solo entrepreneurs</div>
           <h1>Accounting without a database.</h1>
           <p class="lead">
-            Spbook is a lightweight accounting tool designed for solo entrepreneurs. 
-            It stores structured data as JSON files in your Google Drive, eliminating the need for traditional database infrastructure while keeping full control in the hands of the user.
+            Spbook is a lightweight accounting tool designed for solo entrepreneurs.
+            It works offline-first — data is stored locally in the browser and synced to Google Drive as backup.
+            No backend database, no server dependency, full ownership of your records.
           </p>
           <div class="cta-row">
             <a class="btn btn-primary" href="https://spbook.app">Open App</a>
@@ -47,18 +48,16 @@
         <aside class="card hero-panel">
           <div>
             <div class="mini-label">Storage model</div>
-            <pre class="storage-tree">/spbook/
-  /config/
-    ...
-  /2026/
-    /invoices/
-      inv-2026-01.json
-    /transactions/
-      2026-03.json
-    ... </pre>
+            <div class="storage-layers">
+              <div class="layer"><strong>IndexedDB</strong><span>Local operational database</span></div>
+              <div class="layer-arrow">↓ sync</div>
+              <div class="layer"><strong>JSON files</strong><span>Portable, human-readable format</span></div>
+              <div class="layer-arrow">↓ backup</div>
+              <div class="layer"><strong>Google Drive</strong><span>Cloud backup &amp; multi-device transfer</span></div>
+            </div>
           </div>
           <p class="panel-note">
-            No database server. No heavy infrastructure. Just a clear folder structure, JSON files, and cloud storage the user already controls. Each year lives in its own folder — close the year, compress it, and move on.
+            No backend database. Data lives locally in the browser and is synced to Google Drive as JSON files. Google Drive is used only for backup and multi-device transfer — not as a live database.
           </p>
           <div class="stats">
             <div class="stat">
@@ -148,8 +147,8 @@
   "type": "invoice",
   "issueDate": "2026-04-01",
   "client": {
-    "name": "Example OÜ",
-    "country": "EE"
+    "name": "Example d.o.o.",
+    "country": "SI"
   },
   "currency": "EUR",
   "amount": 1234.50,
@@ -159,7 +158,7 @@
         <div class="card story">
           <h2 class="section-title">Why Google Drive</h2>
           <p>
-            Google Drive is not presented here as a universal answer for every application. It is a practical storage layer for a small personal accounting tool: familiar, accessible, backed up, and already good enough for structured files and directory-based organization.
+            Google Drive is not presented here as a universal answer for every application. It serves as a sync and backup layer — familiar, accessible, and already good enough for transferring structured JSON files between devices. The application works fully offline; Drive is only involved when you choose to sync.
           </p>
         </div>
       </div>
