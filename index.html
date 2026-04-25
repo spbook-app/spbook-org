@@ -41,6 +41,25 @@
         <a href="#open-source">Open Source</a>
         <a href="https://github.com/spbook-app" target="_blank" rel="noreferrer">GitHub</a>
       </nav>
+
+      <!-- Theme switcher inline in nav -->
+      <div id="theme-switcher" style="position:relative;font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-size:12px;font-weight:500;user-select:none;flex-shrink:0;">
+        <div id="sw-palette-menu" style="display:none;flex-direction:column;gap:2px;position:absolute;top:calc(100% + 8px);left:0;border-radius:12px;padding:6px;box-shadow:0 8px 32px rgba(0,0,0,0.4);min-width:130px;z-index:200;"></div>
+        <div id="sw-mode-menu" style="display:none;flex-direction:column;gap:2px;position:absolute;top:calc(100% + 8px);right:0;border-radius:12px;padding:6px;box-shadow:0 8px 32px rgba(0,0,0,0.4);min-width:120px;z-index:200;"></div>
+        <div id="sw-pill" style="display:flex;align-items:stretch;border-radius:999px;border:1px solid rgba(0,0,0,0.12);transition:background 0.2s ease,color 0.2s ease,border-color 0.2s ease;">
+          <button id="sw-palette" title="Choose palette" style="display:flex;align-items:center;gap:6px;padding:5px 8px 5px 11px;background:none;border:none;cursor:pointer;color:inherit;font:inherit;border-radius:999px 0 0 999px;">
+            <span id="sw-swatch" style="width:8px;height:8px;border-radius:50%;flex-shrink:0;background:#c96442;"></span>
+            <span id="sw-palette-label">Warm</span>
+            <span style="opacity:0.4;font-size:9px;">&#9660;</span>
+          </button>
+          <div id="sw-divider" style="width:1px;margin:5px 0;"></div>
+          <button id="sw-mode" title="Choose mode" style="display:flex;align-items:center;gap:4px;padding:5px 11px 5px 8px;background:none;border:none;cursor:pointer;color:inherit;font:inherit;border-radius:0 999px 999px 0;">
+            <span id="sw-mode-icon"></span>
+            <span id="sw-mode-label"></span>
+            <span style="opacity:0.4;font-size:9px;">&#9660;</span>
+          </button>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -220,41 +239,6 @@
       </div>
     </div>
   </footer>
-  <div id="theme-switcher" style="
-    position: fixed; bottom: 24px; right: 24px; z-index: 9999;
-    display: flex; align-items: stretch;
-    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-    font-size: 13px; font-weight: 500; user-select: none;
-    border-radius: 999px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.35);
-    background: rgba(23,22,15,0.90);
-    border: 1px solid rgba(255,248,230,0.14);
-    color: #e8e4d8;
-    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-  ">
-    <button id="sw-palette" title="Change palette" style="
-      display: flex; align-items: center; gap: 7px;
-      padding: 9px 10px 9px 14px;
-      background: none; border: none; cursor: pointer;
-      color: inherit; font: inherit; border-radius: 999px 0 0 999px;
-    ">
-      <span id="sw-swatch" style="
-        width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0;
-        background: #c96442; box-shadow: 0 0 0 1px rgba(255,255,255,0.2);
-      "></span>
-      <span id="sw-palette-label">Warm</span>
-    </button>
-    <div id="sw-divider" style="width: 1px; background: rgba(255,255,255,0.12); margin: 8px 0;"></div>
-    <button id="sw-mode" title="Change mode" style="
-      display: flex; align-items: center; gap: 5px;
-      padding: 9px 14px 9px 10px;
-      background: none; border: none; cursor: pointer;
-      color: inherit; font: inherit; border-radius: 0 999px 999px 0;
-    ">
-      <span id="sw-mode-icon"></span>
-      <span id="sw-mode-label"></span>
-    </button>
-  </div>
 
   <script>
     (function () {
@@ -271,14 +255,17 @@
         { id: 'dark',   icon: '🌙', label: 'Dark'   },
       ];
 
-      var link      = document.getElementById('theme-stylesheet');
-      var switcher  = document.getElementById('theme-switcher');
-      var divider   = document.getElementById('sw-divider');
-      var swSwatch  = document.getElementById('sw-swatch');
-      var swPLabel  = document.getElementById('sw-palette-label');
-      var swMIcon   = document.getElementById('sw-mode-icon');
-      var swMLabel  = document.getElementById('sw-mode-label');
-      var mq        = window.matchMedia('(prefers-color-scheme: dark)');
+      var link         = document.getElementById('theme-stylesheet');
+      var pill         = document.getElementById('sw-pill');
+      var paletteMenu  = document.getElementById('sw-palette-menu');
+      var modeMenu     = document.getElementById('sw-mode-menu');
+      var swSwatch     = document.getElementById('sw-swatch');
+      var swPLabel     = document.getElementById('sw-palette-label');
+      var swMIcon      = document.getElementById('sw-mode-icon');
+      var swMLabel     = document.getElementById('sw-mode-label');
+      var swDivider    = document.getElementById('sw-divider');
+      var mq           = window.matchMedia('(prefers-color-scheme: dark)');
+      var openMenu     = null; /* 'palette' | 'mode' | null */
 
       var pidx = Math.max(0, PALETTES.findIndex(function (p) {
         return p.id === (localStorage.getItem('spbook-palette') || 'warm');
@@ -287,31 +274,108 @@
         return m.id === (localStorage.getItem('spbook-mode') || 'system');
       }));
 
+      /* Build palette dropdown items */
+      PALETTES.forEach(function (p, i) {
+        var item = makeItem(p.label, paletteMenu, function (e) {
+          e.stopPropagation();
+          pidx = i;
+          localStorage.setItem('spbook-palette', p.id);
+          closeMenus();
+          render();
+        });
+        var dot = document.createElement('span');
+        dot.style.cssText = 'width:9px;height:9px;border-radius:50%;flex-shrink:0;background:' + p.swatch + ';box-shadow:0 0 0 1px rgba(255,255,255,0.18);';
+        item.insertBefore(dot, item.firstChild);
+        item._pidx = i;
+      });
+
+      /* Build mode dropdown items */
+      MODES.forEach(function (m, i) {
+        var item = makeItem(m.icon + '  ' + m.label, modeMenu, function (e) {
+          e.stopPropagation();
+          midx = i;
+          localStorage.setItem('spbook-mode', m.id);
+          closeMenus();
+          render();
+        });
+        item._midx = i;
+      });
+
       render();
 
-      document.getElementById('sw-palette').addEventListener('click', function () {
-        pidx = (pidx + 1) % PALETTES.length;
-        localStorage.setItem('spbook-palette', PALETTES[pidx].id);
-        render();
+      document.getElementById('sw-palette').addEventListener('click', function (e) {
+        e.stopPropagation();
+        openMenu === 'palette' ? closeMenus() : openDropdown('palette');
       });
 
-      document.getElementById('sw-mode').addEventListener('click', function () {
-        midx = (midx + 1) % MODES.length;
-        localStorage.setItem('spbook-mode', MODES[midx].id);
-        render();
+      document.getElementById('sw-mode').addEventListener('click', function (e) {
+        e.stopPropagation();
+        openMenu === 'mode' ? closeMenus() : openDropdown('mode');
       });
+
+      document.addEventListener('click', function () { closeMenus(); });
 
       mq.addEventListener('change', function () {
         if (MODES[midx].id === 'system') render();
       });
+
+      function makeItem(text, parent, onClick) {
+        var item = document.createElement('button');
+        item.style.cssText = [
+          'display:flex; align-items:center; gap:9px;',
+          'width:100%; padding:7px 10px;',
+          'background:none; border:none; cursor:pointer;',
+          'color:inherit; font:inherit; border-radius:8px;',
+          'text-align:left; transition:background 0.12s; white-space:nowrap;',
+        ].join('');
+        item.textContent = text;
+        item.addEventListener('mouseover', function () { item.style.background = 'rgba(128,128,128,0.12)'; });
+        item.addEventListener('mouseout',  function () { item.style.background = 'none'; });
+        item.addEventListener('click', onClick);
+        parent.appendChild(item);
+        return item;
+      }
+
+      function openDropdown(which) {
+        openMenu = which;
+        paletteMenu.style.display = which === 'palette' ? 'flex' : 'none';
+        modeMenu.style.display    = which === 'mode'    ? 'flex' : 'none';
+        updateMenuTheme(which === 'palette' ? paletteMenu : modeMenu);
+        highlightActive();
+      }
+
+      function closeMenus() {
+        openMenu = null;
+        paletteMenu.style.display = 'none';
+        modeMenu.style.display    = 'none';
+      }
 
       function isDark() {
         var m = MODES[midx].id;
         return m === 'dark' || (m === 'system' && mq.matches);
       }
 
+      function updateMenuTheme(menu) {
+        var light = !isDark();
+        menu.style.background  = light ? 'rgba(245,244,237,0.98)' : 'rgba(28,27,18,0.97)';
+        menu.style.borderColor = light ? 'rgba(0,0,0,0.10)'       : 'rgba(255,248,230,0.14)';
+        menu.style.color       = light ? '#4d4c48'                 : '#e8e4d8';
+      }
+
+      function highlightActive() {
+        Array.from(paletteMenu.children).forEach(function (item, i) {
+          item.style.fontWeight = (i === pidx) ? '700' : '500';
+          item.style.opacity    = (i === pidx) ? '1'   : '0.72';
+        });
+        Array.from(modeMenu.children).forEach(function (item, i) {
+          item.style.fontWeight = (i === midx) ? '700' : '500';
+          item.style.opacity    = (i === midx) ? '1'   : '0.72';
+        });
+      }
+
       function render() {
-        var dark = isDark();
+        var dark  = isDark();
+        var light = !dark;
         var p = PALETTES[pidx];
         var m = MODES[midx];
         link.href = dark ? p.d : p.l;
@@ -321,11 +385,16 @@
         swMIcon.textContent       = m.icon;
         swMLabel.textContent      = m.label;
 
-        var light = !dark;
-        switcher.style.background  = light ? 'rgba(245,244,237,0.94)' : 'rgba(23,22,15,0.90)';
-        switcher.style.borderColor = light ? 'rgba(0,0,0,0.10)'       : 'rgba(255,248,230,0.14)';
-        switcher.style.color       = light ? '#4d4c48'                 : '#e8e4d8';
-        divider.style.background   = light ? 'rgba(0,0,0,0.12)'       : 'rgba(255,255,255,0.12)';
+        pill.style.background      = light ? 'transparent'              : 'rgba(255,255,255,0.07)';
+        pill.style.borderColor     = light ? 'rgba(0,0,0,0.13)'         : 'rgba(255,255,255,0.18)';
+        pill.style.color           = light ? '#4d4c48'                   : '#e8e4d8';
+        swDivider.style.background = light ? 'rgba(0,0,0,0.10)'         : 'rgba(255,255,255,0.15)';
+
+        if (openMenu) {
+          var activeMenu = openMenu === 'palette' ? paletteMenu : modeMenu;
+          updateMenuTheme(activeMenu);
+          highlightActive();
+        }
       }
     })();
   </script>
